@@ -19,6 +19,7 @@ import java.text.NumberFormat;
 public class MainActivity extends AppCompatActivity {
 
     int quantity=0;
+    int unitPrice = 5; //price per cup of coffee
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,13 +31,14 @@ public class MainActivity extends AppCompatActivity {
      * This method is called when the order button is clicked.
      */
     public void submitOrder(View view) {
-        displayPrice(quantity*2);
+        int price = calculatePrice();
+        displayMessage(createOrderSummary(price));
     }
 
     /**
      * This method displays the given quantity value on the screen.
      */
-    private void display(int number) {
+    private void displayQuantity(int number) {
         TextView quantityTextView = (TextView) findViewById(R.id.quantity_text_view);
         quantityTextView.setText("" + number);
     }
@@ -50,11 +52,19 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
+     * This method displays the given text on the screen.
+     */
+    private void displayMessage(String message) {
+        TextView priceTextView = (TextView) findViewById(R.id.price_text_view);
+        priceTextView.setText(message);
+    }
+
+    /**
      * This method increments the number of coffees ordered by 1 when + button is pressed
      */
     public void increment(View view){
         quantity+=1;
-        display(quantity);
+        displayQuantity(quantity);
     }
 
     /**
@@ -64,8 +74,25 @@ public class MainActivity extends AppCompatActivity {
         if(quantity>0){
             quantity-=1;
         }
-        display(quantity);
+        displayQuantity(quantity);
     }
 
+    /**
+     * Calculates the price of the order.
+     *
+     */
+    private int calculatePrice() {
+        return quantity * unitPrice;
+    }
+
+    private String createOrderSummary(int price){
+        String name = "Kaptain Kunal";
+        String orderSummary =
+                    "Name: "+name
+                + "\nQuantity: "+quantity
+                + "\nTotal: €"+price
+                + "\nThank You!";
+        return orderSummary;
+    }
 
 }
